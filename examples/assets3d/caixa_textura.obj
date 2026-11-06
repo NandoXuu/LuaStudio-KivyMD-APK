@@ -1,0 +1,22 @@
+# caixa de teste com dois materiais
+mtllib caixa_textura.mtl
+v -1 0 -1
+v 1 0 -1
+v 1 0 1
+v -1 0 1
+v -1 2 -1
+v 1 2 -1
+v 1 2 1
+v -1 2 1
+vt 0 0
+vt 1 0
+vt 1 1
+vt 0 1
+usemtl Xadrez
+f 1/1 2/2 3/3 4/4
+f 5/1 8/4 7/3 6/2
+usemtl Azul
+f 1 5 6 2
+f 2 6 7 3
+f 3 7 8 4
+f 4 8 5 1

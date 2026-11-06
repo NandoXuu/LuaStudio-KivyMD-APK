@@ -1,0 +1,6 @@
+newmtl Xadrez
+Kd 1.0 1.0 1.0
+map_Kd xadrez.png
+
+newmtl Azul
+Kd 0.2 0.5 0.95

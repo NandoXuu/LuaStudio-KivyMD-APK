@@ -1,0 +1,30 @@
+{
+  "format": "lsa",
+  "version": 1,
+  "clips": [
+    {
+      "name": "Acenar",
+      "duration": 1.2,
+      "loop": true,
+      "tracks": {
+        "Topo": [
+          { "t": 0.0, "rot": [0, 0, 0] },
+          { "t": 0.6, "rot": [0, 0, -35] },
+          { "t": 1.2, "rot": [0, 0, 0] }
+        ]
+      }
+    },
+    {
+      "name": "Agachar",
+      "duration": 0.8,
+      "loop": false,
+      "tracks": {
+        "Base": [
+          { "t": 0.0, "rot": [0, 0, 0] },
+          { "t": 0.4, "rot": [-20, 0, 0] },
+          { "t": 0.8, "rot": [0, 0, 0] }
+        ]
+      }
+    }
+  ]
+}

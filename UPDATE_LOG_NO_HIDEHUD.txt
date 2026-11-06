@@ -1,0 +1,46 @@
+LOG COMPLETO DE ATUALIZACAO — LuaStudio lsS16-8 Capture + PostProcessing
+
+Objetivo
+Remover somente a opção pública HideHUD do modo de fotografia, pois a engine não possui uma definição geral de HUD nem um mecanismo confiável para identificar e ocultar automaticamente todos os elementos de interface de cada jogo.
+
+Alterações realizadas
+1. luastudio/capture_api.py
+   - Removida a leitura da opção HideHUD em Capture.PhotoMode.Enable.
+   - Removida a mensagem de log que era emitida quando HideHUD=true.
+   - Mantido o restante do funcionamento de Capture.PhotoMode.Enable, incluindo a preservação da calibração de cor, as opções de pós-processamento e FreezeGame.
+   - Mantidas as funções PhotoMode.Disable, PhotoMode.IsEnabled e PhotoMode.SetPostProcessing.
+   - Nenhuma função de captura, gravação, screenshot, armazenamento ou pós-processamento foi removida.
+
+2. examples/38_capture_postprocessing.lua
+   - Atualizado o exemplo para usar Capture.PhotoMode.Enable({FreezeGame = true}), sem HideHUD.
+   - Mantidos o exemplo de Graphics.PostProcessing.Set, captura de screenshot PNG, gravação AVI/MJPEG e ajustes de pós-processamento no modo foto.
+
+3. README.md
+   - Corrigida a descrição das limitações do modo foto.
+   - Removida a referência à ocultação automática de HUD como recurso futuro desta integração.
+   - Esclarecido que a API pública do PhotoMode não oferece uma opção para ocultar HUD e que o desenvolvedor pode controlar a própria interface diretamente no código do jogo, se desejar.
+
+Recursos preservados
+- Capture.Screenshot e suas opções de formato, qualidade, tamanho e resolução.
+- Capture.Recording.Start, Capture.Recording.Stop e Capture.Recording.IsRecording.
+- Capture.PhotoMode.Enable, Disable, IsEnabled e SetPostProcessing.
+- Pausa opcional do relógio do mundo por FreezeGame.
+- Salvamento e restauração da calibração de cor ao entrar e sair do modo foto.
+- Graphics.PostProcessing e os demais módulos, exemplos, assets, scripts, configurações e arquivos do projeto original.
+- API de armazenamento e consulta do último arquivo salvo.
+- Todos os recursos que não estavam relacionados à opção HideHUD.
+
+Compatibilidade e comportamento
+- HideHUD deixa de ser uma opção reconhecida pela API pública de Capture.PhotoMode.Enable.
+- A remoção não tenta descobrir automaticamente quais objetos são HUD e não altera a visibilidade de elementos da interface do jogo.
+- Projetos que passarem HideHUD em uma tabela de opções não terão esse parâmetro aplicado; as outras opções continuam funcionando normalmente.
+- Nenhuma outra funcionalidade foi intencionalmente removida ou modificada.
+
+Verificação
+- Inspecionados os arquivos do pacote relacionados a HideHUD/HUD.
+- Removidas as referências executáveis a HideHUD da implementação e do exemplo.
+- Mantida a estrutura do pacote e os demais arquivos originais.
+- Esta atualização foi verificada por inspeção dos arquivos; não representa um teste completo de execução gráfica em dispositivo Android.
+
+Resumo
+Foi removida exclusivamente a opção HideHUD e sua mensagem de log associada. As demais funções e recursos do pacote foram preservados.

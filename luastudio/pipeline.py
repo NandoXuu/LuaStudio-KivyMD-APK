@@ -1,0 +1,134 @@
+# -*- coding: utf-8 -*-
+"""Render pipeline: organiza o desenho da cena 3D em estagios claros
+(cull -> geometria/G-Buffer -> sombras -> deferred shading -> saida) e
+cuida de batching/caching pra nao reprocessar objetos estaticos toda hora.
+"""
+
+from . import render3d as r3d
+from . import shading
+from . import lighting as light_mod
+from . import glsl as glsl_mod
+
+
+def _emissive(obj):
+    """`Emissive` de um part: brilho proprio somado a cor (1.0 = o proprio
+    albedo). Com HDR ligado passa de 1.0 e vira realce real no display."""
+    try:
+        value = float(obj.props.get("Emissive") or 0.0)
+    except (TypeError, ValueError):
+        return 0.0
+    return value if value == value and value > 0.0 else 0.0
+
+
+class RenderStats(object):
+    __slots__ = ("draw_calls", "faces", "cached_hits", "lights_used")
+
+    def __init__(self):
+        self.draw_calls = 0
+        self.faces = 0
+        self.cached_hits = 0
+        self.lights_used = 0
+
+
+class RenderPipeline(object):
+    def __init__(self, ambient=0.12, max_lights=light_mod.MAX_LIGHTS_DEFAULT):
+        self.ambient = ambient
+        self.max_lights = max_lights
+        self.lightmap = light_mod.LightmapCache()
+        self.stats = RenderStats()
+        self._occluder_cache = []
+        self._static_cache = {}   # chave do objeto estatico -> ultimo frame renderizado
+        self._batches = {}        # (shape, shader) -> lista de instancias (batching por material/malha)
+
+    # ---------------------------------------------------------- batching
+    def batch(self, parts):
+        """Agrupa instancias por (malha, shader) — objetos do mesmo tipo sao
+        processados em sequencia, o que melhora localidade de cache e permite,
+        no futuro, reaproveitar a mesma malha transformada base entre eles."""
+        self._batches.clear()
+        for inst in parts:
+            key = (str(inst.props.get("Shape") or "cube").lower(),
+                   str(inst.props.get("Shader") or "lambert").lower())
+            self._batches.setdefault(key, []).append(inst)
+        ordered = []
+        for key in sorted(self._batches):
+            ordered.extend(self._batches[key])
+        return ordered
+
+    def _cache_key(self, inst):
+        return (id(inst), inst.pos(), inst.rot3(), inst.size(), inst.color())
+
+    def is_static(self, inst):
+        return bool(inst.props.get("Static"))
+
+    # ------------------------------------------------------------ frame
+    def render(self, parts, lights, camera, width, height, occluders=None, ground_y=None):
+        self.stats = RenderStats()
+        if not parts:
+            return []
+
+        lights = [l for l in lights if getattr(l, "enabled", True)]
+        lights_changed = self.lightmap.invalidate_if_lights_changed(lights)
+        occluders = occluders or []
+        self._occluder_cache = occluders
+
+        ordered = self.batch(parts)
+        gbuf = shading.build_gbuffer(ordered, camera, width, height)
+        self.stats.faces = len(gbuf)
+        self.stats.draw_calls = len(self._batches)
+
+        def shadow_lookup(pos, near_lights):
+            if not occluders:
+                return 1.0
+            return light_mod.shadow_factor_for_point(
+                pos, near_lights, occluders, ground_y=ground_y, samples=3, softness=0.15)
+
+        out = []
+        for entry in gbuf:
+            near_lights = light_mod.filter_lights(lights, point=entry.pos, max_lights=self.max_lights)
+            self.stats.lights_used = max(self.stats.lights_used, len(near_lights))
+
+            # ---- material GLSL (GPU, por pixel): pula o shading em CPU ----
+            mat_name = entry.material["shader"]
+            if glsl_mod.MATERIALS.is_glsl_material(mat_name):
+                out.append({
+                    "points": entry.points, "depth": entry.depth, "obj": entry.obj,
+                    "layer": entry.layer, "color": entry.albedo,                     # usado so como fallback se o shader falhar
+                    "glsl_material": mat_name,
+                    "world": entry.world, "uv": entry.uv, "tangent": entry.tangent,
+                    "normal": entry.normal, "lights": near_lights, "ambient": self.ambient,
+                })
+                continue
+
+            static = self.is_static(entry.obj)
+            if static:
+                key = (id(entry.obj), entry.face_idx)
+                cached = self.lightmap._cache.get(key)
+                if cached is not None:
+                    self.stats.cached_hits += 1
+                    color = cached
+                else:
+                    shadow = shadow_lookup(entry.pos, near_lights)
+                    shader_fn = shading.get_shader(entry.material["shader"])
+                    ctx = {"pos": entry.pos, "normal": entry.normal, "albedo": entry.albedo,
+                           "lights": near_lights, "ambient": self.ambient, "shadow": shadow,
+                           "view_dir": entry.material["view_dir"], "ao": entry.material["ao"]}
+                    color = shader_fn(ctx)
+                    self.lightmap._cache[key] = color
+            else:
+                shadow = shadow_lookup(entry.pos, near_lights)
+                shader_fn = shading.get_shader(entry.material["shader"])
+                ctx = {"pos": entry.pos, "normal": entry.normal, "albedo": entry.albedo,
+                       "lights": near_lights, "ambient": self.ambient, "shadow": shadow,
+                       "view_dir": entry.material["view_dir"], "ao": entry.material["ao"]}
+                color = shader_fn(ctx)
+            emissive = _emissive(entry.obj)
+            if emissive > 0.0:
+                albedo = entry.albedo
+                color = (color[0] + albedo[0] * emissive, color[1] + albedo[1] * emissive,
+                         color[2] + albedo[2] * emissive, color[3])
+            out.append({"points": entry.points, "color": color, "depth": entry.depth, "obj": entry.obj,
+                        "layer": entry.layer})
+
+        out.sort(key=r3d.sort_key)
+        return out
