@@ -25,7 +25,7 @@ presplash.filename = assets/luastudio_presplash.png
 android.permissions = INTERNET,VIBRATE,CAMERA,RECORD_AUDIO
 
 android.api = 35
-android.minapi = 23
+android.minapi = 24
 android.ndk = 28c
 
 android.accept_sdk_license = True
