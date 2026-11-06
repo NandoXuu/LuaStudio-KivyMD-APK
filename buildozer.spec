@@ -1,4 +1,5 @@
 [app]
+p4a.local_recipes = ./p4a-recipes
 p4a.branch = master
 
 title = LuaStudio
@@ -13,7 +14,7 @@ source.exclude_dirs = tests,__pycache__,.git,bin,.buildozer
 
 version = 7.0
 
-requirements = python3==3.10.12,hostpython3==3.10.12,kivy==2.3.1,kivymd,pillow,numpy,plyer,pyjnius,pygame,pygments,fonttools,gtts
+requirements = python3==3.11.9,hostpython3==3.11.9,kivy==2.3.1,kivymd,pillow,numpy,plyer,pyjnius,pygame,pygments,fonttools,gtts
 
 orientation = landscape
 
