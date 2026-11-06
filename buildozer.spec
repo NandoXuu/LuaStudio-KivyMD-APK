@@ -1,4 +1,5 @@
 [app]
+p4a.branch = develop
 
 title = LuaStudio
 
@@ -12,7 +13,7 @@ source.exclude_dirs = tests,__pycache__,.git,bin,.buildozer
 
 version = 7.0
 
-requirements = python3,kivy==2.3.1,kivymd,pillow,numpy,plyer,pyjnius,pygame,pygments,fonttools,gtts
+requirements = python3==3.13.2,hostpython3==3.13.2,kivy==2.3.1,kivymd,pillow,numpy,plyer,pyjnius,pygame,pygments,fonttools,gtts
 
 orientation = landscape
 
