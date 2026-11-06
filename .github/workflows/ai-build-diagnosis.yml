@@ -1,0 +1,99 @@
+name: LuaStudio AI Build Diagnosis
+
+on:
+  workflow_run:
+    workflows: ["LuaStudio Android APK"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  diagnose:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download failed build logs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          gh run view "$RUN_ID" --log-failed > full.log
+
+      - name: Extract error context
+        run: |
+          grep -n -B 25 -A 40 -E \
+            'fatal error:|Cython.Compiler.Errors|CompileError|Traceback|ERROR:|error:|Exception|FAILED|No matching distribution|Could not find' \
+            full.log | tail -n 1200 > error_excerpt.txt || true
+
+          if [ ! -s error_excerpt.txt ]; then
+            tail -n 300 full.log > error_excerpt.txt
+          fi
+
+          echo "## Build error excerpt" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          cat error_excerpt.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prepare AI prompt
+        run: |
+          cat > ai-prompt.txt <<'EOF'
+          You are an expert Android Python Buildozer/python-for-android debugger.
+
+          Analyze the following failed LuaStudio APK build logs.
+
+          Identify:
+          1. The earliest likely root cause, not merely the final traceback.
+          2. Which errors are secondary or unrelated.
+          3. The exact dependency, recipe, file, or configuration involved.
+          4. A practical correction with exact commands or YAML/spec changes.
+
+          Do not assume every pip error is the root cause.
+          If the logs are insufficient, explicitly say what additional lines are needed.
+          Do not invent APIs, files, or successful fixes.
+
+          BUILD LOG EXCERPT:
+          EOF
+
+          cat error_excerpt.txt >> ai-prompt.txt
+
+      - name: Install Copilot CLI
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Copilot
+        run: npm install -g @github/copilot
+
+      - name: Analyze build with AI
+        id: ai
+        continue-on-error: true
+        uses: actions/ai-inference@v1
+        with:
+          prompt-file: ai-prompt.txt
+          model: gpt-4.1
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_PAT }}
+
+      - name: Publish AI diagnosis
+        if: always()
+        env:
+          AI_RESPONSE: ${{ steps.ai.outputs.response }}
+        run: |
+          echo "## AI build diagnosis" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$AI_RESPONSE" ]; then
+            printf '%s\n' "$AI_RESPONSE" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "AI analysis unavailable. Check Copilot token and action logs." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload extracted error
+        uses: actions/upload-artifact@v4
+        with:
+          name: LuaStudio-error-excerpt
+          path: error_excerpt.txt
