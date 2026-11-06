@@ -20,7 +20,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
-          gh run view "$RUN_ID" --log-failed > full.log
+          gh run view "$RUN_ID" --repo "$GITHUB_REPOSITORY" --log-failed > full.log
 
       - name: Extract error context
         run: |
