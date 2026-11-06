@@ -65,7 +65,24 @@ jobs:
           sed -i '/^android.ant_path[[:space:]]*=/d' buildozer.spec
           sed -i "/^\[app\]/a android.ant_path = $ANT_DIR" buildozer.spec
 
-          buildozer -v android debug
+          set +e
+          buildozer -v android debug > build.log 2>&1
+          BUILD_STATUS=$?
+          echo "BUILD_STATUS=$BUILD_STATUS" >> "$GITHUB_ENV"
+          exit "$BUILD_STATUS"
+
+      - name: Mostrar resumo do erro
+        if: failure()
+        run: |
+          if [ -f build.log ]; then
+            echo "===== ERROS IMPORTANTES ====="
+            grep -n -i -E "fatal error:|error:|traceback|exception|failed|longintrepr|no matching distribution" build.log | tail -n 100 || true
+
+            echo "===== FINAL DO LOG ====="
+            tail -n 80 build.log
+          else
+            echo "Arquivo build.log não encontrado"
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
