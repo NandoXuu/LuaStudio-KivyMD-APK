@@ -24,13 +24,24 @@ jobs:
             openjdk-17-jdk ant \
             python3-pip python3-venv \
             autoconf automake autopoint gettext \
-            libtool pkg-config m4 \
+            libtool libtool-bin libltdl-dev \
+            autotools-dev autoconf-archive \
+            pkg-config m4 \
             zlib1g-dev libncurses5-dev \
             libncursesw5-dev libtinfo6 \
             cmake libffi-dev libssl-dev
 
+          echo "=== Autoconf ==="
           autoreconf --version
-          autopoint --version
+
+          echo "=== Libtoolize ==="
+          libtoolize --version
+
+          echo "=== Automake ==="
+          automake --version
+
+          echo "=== Libtool macros ==="
+          ls -l /usr/share/aclocal/libtool.m4
 
       - name: Install Buildozer
         run: |
