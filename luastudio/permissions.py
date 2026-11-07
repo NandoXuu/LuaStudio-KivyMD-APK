@@ -143,6 +143,28 @@ def toast(msg):
         return False
 
 
+def app_external_dir():
+    """Diretorio privado externo do app; nao exige permissao geral."""
+    try:
+        activity = _android_activity()
+        if activity is not None:
+            folder = activity.getExternalFilesDir(None)
+            if folder is not None:
+                path = str(folder.getAbsolutePath())
+                if not os.path.isdir(path):
+                    os.makedirs(path)
+                return path
+    except Exception:
+        pass
+
+    path = os.path.join(os.path.expanduser("~"), "LuaStudioData")
+    try:
+        os.makedirs(path, exist_ok=True)
+    except Exception:
+        pass
+    return path
+
+
 def storage_dir():
     """Diretorio de trabalho gravavel (Android ou desktop)."""
     candidates = [

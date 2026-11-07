@@ -727,7 +727,6 @@ class LuaStudioApp(MDApp):
             return
         self._sync_editor_to_script()
         try:
-            perms.request(["storage"])
             self._backup_project_scripts()
             path = luaproject.save_project(self.project)
             self.log("[salvo] projeto \"%s\" em %s" % (self.project.name, path))
@@ -739,7 +738,6 @@ class LuaStudioApp(MDApp):
             return
         self._sync_editor_to_script()
         try:
-            perms.request(["storage"])
             luaproject.save_project(self.project)
             dest = luaproject.export_lsp(self.project)
             self.log("[exportado] %s" % dest)

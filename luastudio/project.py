@@ -156,27 +156,21 @@ def _safe_script_name(name):
 
 
 def documents_dir():
-    """Pasta `Documents` do dispositivo (Android ou desktop). E aqui que
-    cada projeto ganha a sua pasta: Documents/<nome_do_projeto>/."""
+    """Pasta de projetos. No Android usa armazenamento privado do app."""
+    if perms.ANDROID:
+        return os.path.join(perms.app_external_dir(), "Projects")
+
     candidates = [
-        "/storage/emulated/0/Documents",
-        os.path.join(os.environ.get("EXTERNAL_STORAGE") or "", "Documents"),
-        "/sdcard/Documents",
         os.path.join(os.path.expanduser("~"), "Documents"),
     ]
     for c in candidates:
-        if not c or c == "Documents":
-            continue
-        check = c if os.path.isdir(c) else os.path.dirname(c)
-        if check and os.path.isdir(check) and os.access(check, os.W_OK):
-            try:
-                if not os.path.isdir(c):
-                    os.makedirs(c)
+        try:
+            os.makedirs(c, exist_ok=True)
+            if os.path.isdir(c) and os.access(c, os.W_OK):
                 return c
-            except Exception:
-                continue
-    # ultimo recurso: dentro da pasta de trabalho do LuaStudio
-    return os.path.join(perms.storage_dir(), "Projects")
+        except Exception:
+            pass
+    return os.path.join(os.path.expanduser("~"), "LuaStudioData", "Projects")
 
 
 def projects_root():
@@ -396,10 +390,23 @@ def list_project_entries():
     """Todos os projetos salvos (Documents/ + pasta antiga), do mais
     recente pro mais antigo, como dicts: folder, path, name, icon,
     scripts, modified, legacy."""
-    entries = _scan_root(projects_root(), False)
-    old = legacy_root()
-    if os.path.normpath(old) != os.path.normpath(projects_root()):
+    root = projects_root()
+    entries = _scan_root(root, False)
+
+    # Projetos antigos: Documents publico e LuaStudio/Projects.
+    old_roots = [
+        "/storage/emulated/0/Documents",
+        "/sdcard/Documents",
+        legacy_root(),
+    ]
+    seen = {os.path.normcase(os.path.normpath(root))}
+    for old in old_roots:
+        key = os.path.normcase(os.path.normpath(old))
+        if key in seen or not os.path.isdir(old):
+            continue
+        seen.add(key)
         entries += _scan_root(old, True)
+
     entries.sort(key=lambda e: e["modified"] or 0, reverse=True)
     return entries
 

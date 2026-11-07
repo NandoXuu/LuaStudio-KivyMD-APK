@@ -140,11 +140,7 @@ class HomeScreen(MDScreen):
         Animation(opacity=0, d=0.25).start(self.flash_label)
 
     def _ask_perms(self):
-        res = perms.request(["storage"])
-        ok = all(res.values()) if res else True
-        self.flash("Armazenamento: %s" % ("permitido" if ok else
-                   "negado - libere nas configurações do app"),
-                   "#A8DBBE" if ok else ERROR)
+        self.flash("Os projetos são salvos na pasta privada do LuaStudio.")
         self.refresh(force=True)
 
     def on_pre_enter(self, *_a):
@@ -162,12 +158,6 @@ class HomeScreen(MDScreen):
         if not force and now - self._last_refresh < 0.3:
             return
         self._last_refresh = now
-        if not self._asked_storage:
-            self._asked_storage = True
-            try:
-                perms.request(["storage"])
-            except Exception:
-                pass
         try:
             entries = luaproject.list_project_entries()
             root = luaproject.projects_root()
