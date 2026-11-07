@@ -1,0 +1,95 @@
+<!doctype html><html lang="pt-BR" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>22_postfx_crt.lua · LuaStudio Docs</title>
+<meta name="description" content="22_postfx_crt.lua"><link rel="icon" href="ico/icon.svg"><link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('ls-theme');if(t)document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.dataset.theme='light'}catch(e){}</script>
+<meta name="theme-color" content="#090c14"></head><body><header class="top"><button id="menu" aria-label="Menu">☰</button><a class="brand" href="index.html"><span class="logo"><img src="ico/icon.svg" alt="" onload="this.parentNode.classList.add('has')" onerror="this.remove()">L</span>LuaStudio <em>Docs</em></a>
+<button id="searchbtn" class="sbtn"><span>Buscar na documentação…</span><kbd>/</kbd></button><a class="aibtn" href="ia.html" title="Assistente de IA"><b>✨</b><span>IA</span></a><button id="theme" aria-label="Alternar tema">☾</button></header>
+<div class="shell"><nav class="side"><details class="grp" open><summary>Assistente</summary><a href="ia.html" class="ai">✨ IA LuaStudio</a></details><details class="grp" open><summary>Começar</summary><a href="index.html">Início</a><a href="primeiros-passos.html">Primeiros passos</a><a href="conceitos.html">Conceitos</a></details><details class="grp"><summary>Plataforma · GBA (C)</summary><a href="gba-index.html">Visão geral do GBA</a><a href="gba-api.html">API C · gba.h</a><a href="gba-assets.html">Assets e recursos</a></details><details class="grp"><summary>Objetos</summary><a href="classes.html">Classes create.*</a><a href="propriedades.html">Propriedades</a><a href="metodos.html">Métodos</a><a href="eventos.html">Eventos</a></details><details class="grp"><summary>API · Núcleo</summary><a href="api-mapa.html">Mapa da API atual</a><a href="api-globals.html">Funções globais</a><a href="api-app.html">app</a><a href="api-environment.html">environment</a><a href="api-pause.html">pause</a><a href="api-timer.html">timer</a><a href="api-tween.html">tween</a><a href="api-Scenes.html">Scenes / scene</a><a href="api-Random.html">Random / random</a><a href="api-JSON.html">JSON / json</a><a href="api-SaveData.html">SaveData / save</a><a href="api-fs.html">fs</a><a href="api-Tilemap.html">Tilemap</a><a href="api-Vector2.html">Vector2</a><a href="api-Vector3.html">Vector3</a></details><details class="grp"><summary>API · Entrada</summary><a href="api-input.html">input</a><a href="api-input-keyboard.html">input.keyboard</a><a href="api-input-mouse.html">input.mouse</a><a href="api-input-gamepad.html">input.gamepad</a><a href="api-keynumb.html">keynumb</a><a href="api-dualsense.html">dualsense</a><a href="api-dualsense-trigger.html">dualsense.trigger</a></details><details class="grp"><summary>API · Áudio</summary><a href="api-sound.html">sound</a><a href="api-mixer.html">mixer</a><a href="api-tts.html">tts / TTS</a></details><details class="grp"><summary>API · Gráficos</summary><a href="api-graphics.html">graphics</a><a href="api-profiler.html">profiler</a><a href="api-postfx.html">postfx / PostFX</a><a href="api-Shader.html">Shader</a><a href="api-Layer.html">Layer / layer</a><a href="api-UI.html">UI / ui</a><a href="api-RichText.html">RichText</a><a href="api-camera2d.html">camera2d</a><a href="api-light2d.html">light2d</a><a href="api-Destruction.html">Destruction</a><a href="api-draw.html">draw (canvas)</a></details><details class="grp"><summary>API · Física</summary><a href="api-physics.html">physics</a><a href="api-physics-world.html">physics.world</a><a href="api-physics-joint.html">physics.joint</a></details><details class="grp"><summary>API · Sistema</summary><a href="api-android.html">android</a><a href="api-http.html">http / Http</a><a href="api-lua.html">Biblioteca Lua padrão</a></details><details class="grp" open><summary>Exemplos</summary><a href="exemplos.html">Galeria</a><a href="exemplo-01_ui_2d.html">01 ui_2d</a><a href="exemplo-02_cena_3d.html">02 cena_3d</a><a href="exemplo-03_android.html">03 android</a><a href="exemplo-04_fisica_e_escala.html">04 fisica_e_escala</a><a href="exemplo-05_ui_decorada_e_sistemas.html">05 ui_decorada_e_sistemas</a><a href="exemplo-06_cenas_e_particulas.html">06 cenas_e_particulas</a><a href="exemplo-07_audio_hrtf2d.html">07 audio_hrtf2d</a><a href="exemplo-08_unicode_e_fontes.html">08 unicode_e_fontes</a><a href="exemplo-09_glsl_pbr_normalmap.html">09 glsl_pbr_normalmap</a><a href="exemplo-10_2d_normalmap_orbit.html">10 2d_normalmap_orbit</a><a href="exemplo-11_canvas_custom_ui.html">11 canvas_custom_ui</a><a href="exemplo-12_pitch_live_ondas.html">12 pitch_live_ondas</a><a href="exemplo-13_super_customizer_mask.html">13 super_customizer_mask</a><a href="exemplo-14_super_customizer_shader.html">14 super_customizer_shader</a><a href="exemplo-15_super_customizer_theme_anchor.html">15 super_customizer_theme_anchor</a><a href="exemplo-16_tts.html">16 tts</a><a href="exemplo-17_gamepad_teclado.html">17 gamepad_teclado</a><a href="exemplo-18_dualsense.html">18 dualsense</a><a href="exemplo-19_normalmap_completo.html">19 normalmap_completo</a><a href="exemplo-20_shader_ondas_esteira.html">20 shader_ondas_esteira</a><a href="exemplo-21_shader_dither_transicao.html">21 shader_dither_transicao</a><a href="exemplo-22_postfx_crt.html" class="on">22 postfx_crt</a><a href="exemplo-23_layer_halftone.html">23 layer_halftone</a><a href="exemplo-24_combo_keynumb.html">24 combo_keynumb</a><a href="exemplo-25_tempo_do_mundo.html">25 tempo_do_mundo</a><a href="exemplo-26_shader_screen_vidro.html">26 shader_screen_vidro</a><a href="exemplo-27_instanciar_cenas.html">27 instanciar_cenas</a><a href="exemplo-28_fisica_real.html">28 fisica_real</a><a href="exemplo-29_dualsense_triggers.html">29 dualsense_triggers</a><a href="exemplo-textbox_custom.html">textbox custom</a></details><details class="grp"><summary>Guias</summary><a href="plugins.html">Plugins</a><a href="arquitetura.html">Arquitetura</a><a href="referencia.html">Referência rápida</a></details></nav><main class="main"><article><div class="crumb">Exemplos</div><h1>22_postfx_crt.lua</h1><p class="lead">Arquivo <code>examples/22_postfx_crt.lua</code> · 87 linhas</p><p><a class="btn small" href="downloads/22_postfx_crt.lua" download>Baixar .lua</a></p><div class="chips"><a class="chip" href="api-app.html">app</a><a class="chip" href="api-postfx.html">postfx</a><a class="chip alt" href="classe-button.html">create.button</a><a class="chip alt" href="classe-label.html">create.label</a><a class="chip alt" href="classe-shader.html">create.shader</a></div><div class="code"><button class="copy" type="button">Copiar</button><pre><code><span class="g">app</span>.background(<span class="s">&quot;#102030&quot;</span>)
+
+<span class="g">create</span>.shader.CRT = {
+  Fragment = <span class="s">[[
+uniform vec2 u_resolution;
+uniform float u_curvature;
+uniform float u_corner_radius;
+uniform float u_scanlines;
+uniform float u_scanline_size;
+uniform float u_vignette;
+uniform float u_brightness;
+uniform float u_interference;
+uniform float u_roll_speed;
+
+float hash(vec2 p) {
+    vec2 p2 = fract(p * vec2(0.1031, 0.1030));
+    p2 += dot(p2, p2.yx + 33.33);
+    return fract((p2.x + p2.y) * p2.x);
+}
+
+void main(void)
+{
+    vec2 local = vLocalUV;
+    vec2 px = local * u_resolution;
+    float aspect = u_resolution.x / u_resolution.y;
+
+    float wave = sin(local.y * 30.0 + uTime * 5.0) * 0.002 * u_interference;
+    float jitter = hash(vec2(uTime, floor(px.y))) * 0.001 * u_interference;
+    vec2 distorted = local + vec2(wave + jitter, 0.0);
+
+    vec2 cc = distorted * 2.0 - 1.0;
+    vec2 bent = cc + cc * cc.yx * cc.yx * u_curvature;
+    bent *= 1.0 + u_curvature * 0.25;
+    vec2 uv = bent * 0.5 + 0.5;
+
+    vec2 half_size = vec2(aspect, 1.0);
+    vec2 p = bent * half_size;
+    vec2 q = abs(p) - (half_size - u_corner_radius);
+    float d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - u_corner_radius;
+    float inside = clamp(0.5 - d / 0.005, 0.0, 1.0);
+
+    if (uv.x &lt; 0.0 || uv.x &gt; 1.0 || uv.y &lt; 0.0 || uv.y &gt; 1.0) {
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        return;
+    }
+
+    vec3 col = sampleContent(uv).rgb;
+
+    float line = px.y / u_scanline_size;
+    float s = 0.5 + 0.5 * cos(line * 6.2832);
+    float lum = dot(col, vec3(0.3, 0.59, 0.11));
+    col *= mix(1.0, mix(1.0 - u_scanlines, 1.0, s), 1.0 - lum * 0.4);
+
+    float scan_roll = mod(local.y + uTime * u_roll_speed, 1.0);
+    float roll_line = smoothstep(0.45, 0.5, scan_roll) * (1.0 - smoothstep(0.5, 0.55, scan_roll));
+    col *= mix(1.0, 0.85, roll_line * u_interference);
+
+    float k = mod(floor(px.x), 3.0);
+    vec3 stripe = (k &lt; 1.0) ? vec3(1.0, 0.7, 0.7) : ((k &lt; 2.0) ? vec3(0.7, 1.0, 0.7) : vec3(0.7, 0.7, 1.0));
+    col *= mix(vec3(1.0), stripe * 1.15, 0.35);
+
+    vec2 v = uv * (1.0 - uv);
+    col *= mix(1.0, pow(clamp(v.x * v.y * 16.0, 0.0, 1.0), 0.3), u_vignette);
+
+    col *= u_brightness;
+    col += (hash(px + uTime) - 0.5) / 100.0 * u_interference;
+
+    gl_FragColor = vec4(mix(vec3(0.0), col, inside), 1.0);
+}
+]]</span>,
+  Uniforms = {
+    u_curvature = <span class="n">0.12</span>, u_corner_radius = <span class="n">0.05</span>, u_scanlines = <span class="n">0.4</span>, u_scanline_size = <span class="n">3</span>,
+    u_vignette = <span class="n">0.45</span>, u_brightness = <span class="n">1.25</span>, u_interference = <span class="n">1</span>, u_roll_speed = <span class="n">0.3</span>,
+  },
+}
+
+<span class="g">create</span>.label.Titulo = { Text = <span class="s">&quot;PostFX: CRT&quot;</span>, Position = {<span class="n">30</span>,<span class="n">40</span>}, Size = {<span class="n">300</span>,<span class="n">40</span>},
+  FontSize = <span class="n">28</span>, TextColor = <span class="s">&quot;#20ff90&quot;</span> }
+<span class="g">create</span>.button.Botao = { Text = <span class="s">&quot;JOGAR&quot;</span>, Position = {<span class="n">30</span>,<span class="n">110</span>}, Size = {<span class="n">260</span>,<span class="n">70</span>},
+  Color = <span class="s">&quot;#2b6cf6&quot;</span>, Radius = <span class="n">12</span>,
+  OnClick = <span class="k">function</span>(self) <span class="g">postfx</span>.Remove(<span class="s">&quot;CRT&quot;</span>) <span class="k">end</span> }
+<span class="g">create</span>.button.Ligar = { Text = <span class="s">&quot;LIGAR CRT&quot;</span>, Position = {<span class="n">30</span>,<span class="n">200</span>}, Size = {<span class="n">260</span>,<span class="n">70</span>},
+  Color = <span class="s">&quot;#e0552b&quot;</span>, Radius = <span class="n">12</span>,
+  OnClick = <span class="k">function</span>(self) <span class="g">postfx</span>.Add(<span class="s">&quot;CRT&quot;</span>) <span class="k">end</span> }
+
+<span class="g">postfx</span>.Add(<span class="s">&quot;CRT&quot;</span>)</code></pre></div></article>
+<footer class="foot">Gerado automaticamente a partir do código-fonte do LuaStudio 7.0 · 22_postfx_crt.lua</footer></main></div>
+<div id="sbox" hidden><div class="sin"><input id="q" placeholder="Buscar funções, classes, propriedades, exemplos…" autocomplete="off"><div id="res"></div></div></div>
+<script src="assets/search-index.js"></script><script src="assets/app.js"></script></body></html>

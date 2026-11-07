@@ -1,0 +1,262 @@
+<!doctype html><html lang="pt-BR" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>API C · GBA · LuaStudio Docs</title>
+<meta name="description" content="Opções globais de renderização: limite de FPS, filtro de textura e contador de FPS."><link rel="icon" href="ico/icon.svg"><link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('ls-theme');if(t)document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.dataset.theme='light'}catch(e){}</script>
+<meta name="theme-color" content="#090c14"></head><body><header class="top"><button id="menu" aria-label="Menu">☰</button><a class="brand" href="index.html"><span class="logo"><img src="ico/icon.svg" alt="" onload="this.parentNode.classList.add('has')" onerror="this.remove()">L</span>LuaStudio <em>Docs</em></a>
+<button id="searchbtn" class="sbtn"><span>Buscar na documentação…</span><kbd>/</kbd></button><a class="aibtn" href="ia.html" title="Assistente de IA"><b>✨</b><span>IA</span></a><button id="theme" aria-label="Alternar tema">☾</button></header>
+<div class="shell"><nav class="side"><details class="grp" open><summary>Assistente</summary><a href="ia.html" class="ai">✨ IA LuaStudio</a></details><details class="grp" open><summary>Começar</summary><a href="index.html">Início</a><a href="primeiros-passos.html">Primeiros passos</a><a href="conceitos.html">Conceitos</a></details><details class="grp"><summary>Plataforma · GBA (C)</summary><a href="gba-index.html">Visão geral do GBA</a><a href="gba-api.html">API C · gba.h</a><a href="gba-assets.html">Assets e recursos</a></details><details class="grp"><summary>Objetos</summary><a href="classes.html">Classes create.*</a><a href="propriedades.html">Propriedades</a><a href="metodos.html">Métodos</a><a href="eventos.html">Eventos</a></details><details class="grp"><summary>API · Núcleo</summary><a href="api-mapa.html">Mapa da API atual</a><a href="api-globals.html">Funções globais</a><a href="api-app.html">app</a><a href="api-environment.html">environment</a><a href="api-pause.html">pause</a><a href="api-timer.html">timer</a><a href="api-tween.html">tween</a><a href="api-Scenes.html">Scenes / scene</a><a href="api-Random.html">Random / random</a><a href="api-JSON.html">JSON / json</a><a href="api-SaveData.html">SaveData / save</a><a href="api-fs.html">fs</a><a href="api-Tilemap.html">Tilemap</a><a href="api-Vector2.html">Vector2</a><a href="api-Vector3.html">Vector3</a></details><details class="grp"><summary>API · Entrada</summary><a href="api-input.html">input</a><a href="api-input-keyboard.html">input.keyboard</a><a href="api-input-mouse.html">input.mouse</a><a href="api-input-gamepad.html">input.gamepad</a><a href="api-keynumb.html">keynumb</a><a href="api-dualsense.html">dualsense</a><a href="api-dualsense-trigger.html">dualsense.trigger</a></details><details class="grp"><summary>API · Áudio</summary><a href="api-sound.html">sound</a><a href="api-mixer.html">mixer</a><a href="api-tts.html">tts / TTS</a></details><details class="grp" open><summary>API · Gráficos</summary><a href="api-graphics.html" class="on">graphics</a><a href="api-profiler.html">profiler</a><a href="api-postfx.html">postfx / PostFX</a><a href="api-Shader.html">Shader</a><a href="api-Layer.html">Layer / layer</a><a href="api-UI.html">UI / ui</a><a href="api-RichText.html">RichText</a><a href="api-camera2d.html">camera2d</a><a href="api-light2d.html">light2d</a><a href="api-Destruction.html">Destruction</a><a href="api-draw.html">draw (canvas)</a></details><details class="grp"><summary>API · Física</summary><a href="api-physics.html">physics</a><a href="api-physics-world.html">physics.world</a><a href="api-physics-joint.html">physics.joint</a></details><details class="grp"><summary>API · Sistema</summary><a href="api-android.html">android</a><a href="api-http.html">http / Http</a><a href="api-lua.html">Biblioteca Lua padrão</a></details><details class="grp"><summary>Exemplos</summary><a href="exemplos.html">Galeria</a><a href="exemplo-01_ui_2d.html">01 ui_2d</a><a href="exemplo-02_cena_3d.html">02 cena_3d</a><a href="exemplo-03_android.html">03 android</a><a href="exemplo-04_fisica_e_escala.html">04 fisica_e_escala</a><a href="exemplo-05_ui_decorada_e_sistemas.html">05 ui_decorada_e_sistemas</a><a href="exemplo-06_cenas_e_particulas.html">06 cenas_e_particulas</a><a href="exemplo-07_audio_hrtf2d.html">07 audio_hrtf2d</a><a href="exemplo-08_unicode_e_fontes.html">08 unicode_e_fontes</a><a href="exemplo-09_glsl_pbr_normalmap.html">09 glsl_pbr_normalmap</a><a href="exemplo-10_2d_normalmap_orbit.html">10 2d_normalmap_orbit</a><a href="exemplo-11_canvas_custom_ui.html">11 canvas_custom_ui</a><a href="exemplo-12_pitch_live_ondas.html">12 pitch_live_ondas</a><a href="exemplo-13_super_customizer_mask.html">13 super_customizer_mask</a><a href="exemplo-14_super_customizer_shader.html">14 super_customizer_shader</a><a href="exemplo-15_super_customizer_theme_anchor.html">15 super_customizer_theme_anchor</a><a href="exemplo-16_tts.html">16 tts</a><a href="exemplo-17_gamepad_teclado.html">17 gamepad_teclado</a><a href="exemplo-18_dualsense.html">18 dualsense</a><a href="exemplo-19_normalmap_completo.html">19 normalmap_completo</a><a href="exemplo-20_shader_ondas_esteira.html">20 shader_ondas_esteira</a><a href="exemplo-21_shader_dither_transicao.html">21 shader_dither_transicao</a><a href="exemplo-22_postfx_crt.html">22 postfx_crt</a><a href="exemplo-23_layer_halftone.html">23 layer_halftone</a><a href="exemplo-24_combo_keynumb.html">24 combo_keynumb</a><a href="exemplo-25_tempo_do_mundo.html">25 tempo_do_mundo</a><a href="exemplo-26_shader_screen_vidro.html">26 shader_screen_vidro</a><a href="exemplo-27_instanciar_cenas.html">27 instanciar_cenas</a><a href="exemplo-28_fisica_real.html">28 fisica_real</a><a href="exemplo-29_dualsense_triggers.html">29 dualsense_triggers</a><a href="exemplo-textbox_custom.html">textbox custom</a></details><details class="grp"><summary>Guias</summary><a href="plugins.html">Plugins</a><a href="arquitetura.html">Arquitetura</a><a href="referencia.html">Referência rápida</a></details></nav><main class="main"><article>
+<div class="crumb">PLATAFORMA · GAME BOY ADVANCE · C</div>
+<h1>API C do Game Boy Advance</h1>
+<p class="lead">Referência alinhada diretamente ao cabeçalho <code>luastudio/gba/runtime/gba.h</code> incluído no pacote da engine. Esta página documenta os símbolos realmente declarados no runtime, sem acrescentar funções presumidas.</p>
+<div class="stats"><div><b>240 × 160</b><span>Resolução nativa</span></div><div><b>ARM7TDMI</b><span>CPU do hardware</span></div><div><b>Mode 3 / 4</b><span>Bitmap documentado</span></div><div><b>gba.h</b><span>Fonte de verdade</span></div></div>
+<div class="fn"><h3>Compatibilidade e modelo de execução</h3><p>O cabeçalho oferece tipos inteiros explícitos, ponto fixo 24.8, acesso direto aos registradores, vídeo bitmap e tile, sprites, áudio PSG/PCM, DMA e rotinas de memória. O runtime também possui caminho <code>GBA_HOST</code> para testes no computador. A implementação e o linker script continuam sendo a autoridade final sobre o que pode ser executado no hardware.</p></div>
+<h2>Começo rápido</h2>
+<div class="code"><pre><code>#include "gba.h"
+
+int main(void) {
+    gba_init();              // inicializa VBlank e som
+    gfx_init(3);              // bitmap 240x160, RGB15
+    while (1) {
+        key_poll();
+        gfx_clear(BLACK);
+        if (key_held(KEY_A))
+            gfx_text(72, 72, "LUA STUDIO", WHITE);
+        vsync();
+    }
+}</code></pre></div>
+<h2>Referência por subsistema</h2>
+<h3>Inicialização e sincronização</h3>
+<p><code>gba_init()</code> inicializa o runtime (deve ser chamada primeiro); <code>vsync()</code> aguarda o VBlank; <code>frame_count()</code> retorna o total de VBlanks desde a inicialização.</p>
+<h3>Entrada</h3>
+<p>Chame <code>key_poll()</code> a cada frame antes de consultar o estado. <code>key_held(k)</code>, <code>key_pressed(k)</code> e <code>key_released(k)</code> consultam pressionado, recém-pressionado e recém-liberado. <code>key_axis_x()</code> e <code>key_axis_y()</code> retornam eixos digitais do direcional.</p>
+<p>Constantes: <code>KEY_A</code>, <code>KEY_B</code>, <code>KEY_SELECT</code>, <code>KEY_START</code>, <code>KEY_RIGHT</code>, <code>KEY_LEFT</code>, <code>KEY_UP</code>, <code>KEY_DOWN</code>, <code>KEY_R</code> e <code>KEY_L</code>.</p>
+<h3>Vídeo bitmap e desenho</h3>
+<p><code>gfx_init(3)</code> seleciona modo 3 (RGB15, buffer único); <code>gfx_init(4)</code> seleciona modo 4 (índices de paleta, páginas alternadas). Use <code>gfx_flip()</code> no modo 4, preferencialmente após <code>vsync()</code>. A API inclui pixel, leitura, linhas, retângulos, círculos, blit e paleta.</p>
+<h3>Texto e tilemaps</h3>
+<p><code>gfx_text</code>, <code>gfx_text_bg</code>, <code>gfx_int</code> e <code>gfx_hex</code> desenham texto/números no bitmap. <code>bg_tiles_4bpp</code>, <code>bg_map</code> e <code>bg_config</code> configuram fundos em tiles; <code>txt_init</code>, <code>txt_print</code> e <code>txt_clear</code> gerenciam texto baseado em tiles.</p>
+<h3>Sprites e OAM</h3>
+<p><code>spr_init()</code> prepara os 128 sprites; <code>spr_set</code> configura um sprite e <code>spr_hide</code> o oculta. <code>spr_tiles</code> e <code>spr_palette</code> carregam dados. <code>spr_flush()</code> envia o shadow-OAM; faça isso no VBlank. Tamanhos e flags: <code>SPR_8x8</code>, <code>SPR_16x16</code>, <code>SPR_32x32</code>, <code>SPR_64x64</code>, <code>SPR_HFLIP</code> e <code>SPR_VFLIP</code>.</p>
+<h3>Áudio</h3>
+<p>Música: <code>snd_init</code>, <code>snd_play</code>, <code>snd_stop</code>, <code>snd_pause</code>, <code>snd_playing</code>. PCM mono 8-bit assinado: <code>snd_pcm_play</code> e <code>snd_pcm_stop</code>. Efeitos PSG: <code>snd_beep</code> (canais 0–3).</p>
+<h3>Matemática, memória e compressão</h3>
+<p><code>FIX</code>/<code>FIX_INT</code> e <code>fix_mul</code> trabalham com ponto fixo 24.8. <code>fsin</code>/<code>fcos</code> usam tabela de 256 posições. Há xorshift (<code>rand_u32</code>, <code>rand_seed</code>, <code>rand_range</code>), <code>isqrt32</code>, macros <code>ABS</code>/<code>MIN</code>/<code>MAX</code>/<code>CLAMP</code>, cópias e preenchimentos por CPU/DMA e descompressão BIOS LZ77.</p>
+<h2>Declarações do cabeçalho</h2>
+<p>Lista literal das declarações públicas encontradas em <code>gba.h</code>. Consulte o arquivo original para contexto de macros condicionais, atributos de seção e layout dos registradores.</p>
+<div class="code"><pre><code>/* LuaStudio GBA runtime (gba.h)
+ * Biblioteca minima e otimizada para o Game Boy Advance.
+ * Tudo aqui foi pensado para ARM7TDMI @16.78MHz, sem FPU, sem malloc e sem libc.
+ *
+ * Compila no GBA (arm-none-eabi-gcc) e, com -DGBA_HOST, no PC (testes).
+ */
+#ifndef GBA_H
+#define GBA_H
+
+#ifdef __cplusplus
+extern &quot;C&quot; {
+#endif
+
+typedef unsigned char  u8;   typedef signed char  s8;
+typedef unsigned short u16;  typedef signed short s16;
+typedef unsigned int   u32;  typedef signed int   s32;
+typedef volatile u8  vu8;    typedef volatile u16 vu16;   typedef volatile u32 vu32;
+typedef s32 fixed;                 /* ponto fixo 24.8 */
+typedef u16 color_t;
+#ifndef NULL
+#define NULL ((void *)0)
+#endif
+
+/* ------------------------------------------------------------- memoria */
+#ifdef GBA_HOST
+extern u8 gba_host_io[0x400], gba_host_pal[0x400], gba_host_vram[0x18000],
+          gba_host_oam[0x400];
+#define MEM_IO   ((u8 *)gba_host_io)
+#define MEM_PAL  ((u8 *)gba_host_pal)
+#define MEM_VRAM ((u8 *)gba_host_vram)
+#define MEM_OAM  ((u8 *)gba_host_oam)
+#define IWRAM_CODE
+#define IWRAM_DATA
+#define EWRAM_DATA
+#define EWRAM_BSS
+#else
+#define MEM_IO   ((u8 *)0x04000000)
+#define MEM_PAL  ((u8 *)0x05000000)
+#define MEM_VRAM ((u8 *)0x06000000)
+#define MEM_OAM  ((u8 *)0x07000000)
+/* Codigo quente roda em IWRAM (barramento 32 bits, 0 wait states): 3-5x mais rapido que a ROM */
+#define IWRAM_CODE __attribute__((section(&quot;.iwram.text&quot;), long_call, target(&quot;arm&quot;)))
+#define IWRAM_DATA __attribute__((section(&quot;.iwram&quot;)))
+#define EWRAM_DATA __attribute__((section(&quot;.ewram&quot;)))   /* inicializado */
+#define EWRAM_BSS  __attribute__((section(&quot;.sbss&quot;)))    /* NAO zerado */
+#endif
+#define ALIGN4 __attribute__((aligned(4)))
+#define INLINE static inline __attribute__((always_inline))
+
+#define IO16(o) (*(vu16 *)(MEM_IO + (o)))
+#define IO32(o) (*(vu32 *)(MEM_IO + (o)))
+#define REG_DISPCNT   IO16(0x000)
+#define REG_DISPSTAT  IO16(0x004)
+#define REG_VCOUNT    IO16(0x006)
+#define REG_BGCNT(n)  IO16(0x008 + 2 * (n))
+#define REG_BGHOFS(n) IO16(0x010 + 4 * (n))
+#define REG_BGVOFS(n) IO16(0x012 + 4 * (n))
+#define REG_KEYINPUT  IO16(0x130)
+#define REG_IE        IO16(0x200)
+#define REG_IF        IO16(0x202)
+#define REG_IME       IO16(0x208)
+
+/* ---------------------------------------------------------------- video */
+#define SCREEN_W 240
+#define SCREEN_H 160
+#define RGB15(r, g, b) ((color_t)((r) | ((g) &lt;&lt; 5) | ((b) &lt;&lt; 10)))
+#define RGB8(r, g, b)  RGB15((r) &gt;&gt; 3, (g) &gt;&gt; 3, (b) &gt;&gt; 3)
+#define BLACK RGB15(0, 0, 0)
+#define WHITE RGB15(31, 31, 31)
+#define RED   RGB15(31, 0, 0)
+#define GREEN RGB15(0, 31, 0)
+#define BLUE  RGB15(0, 0, 31)
+#define YELLOW RGB15(31, 31, 0)
+
+#define DCNT_MODE0 0x0000
+#define DCNT_MODE3 0x0003
+#define DCNT_MODE4 0x0004
+#define DCNT_BG0 0x0100
+#define DCNT_BG1 0x0200
+#define DCNT_BG2 0x0400
+#define DCNT_BG3 0x0800
+#define DCNT_OBJ 0x1000
+#define DCNT_OBJ_1D 0x0040
+#define DCNT_PAGE 0x0010
+
+#define PAL_BG(i)  (((vu16 *)MEM_PAL)[i])
+#define PAL_OBJ(i) (((vu16 *)(MEM_PAL + 0x200))[i])
+
+void gba_init(void);        /* IRQ de VBlank + som (chame primeiro) */
+void vsync(void);           /* espera o VBlank dormindo (economiza bateria) */
+u32  frame_count(void);     /* VBlanks desde gba_init */
+
+/* ---------------------------------------------------------------- input */
+#define KEY_A 0x001
+#define KEY_B 0x002
+#define KEY_SELECT 0x004
+#define KEY_START 0x008
+#define KEY_RIGHT 0x010
+#define KEY_LEFT 0x020
+#define KEY_UP 0x040
+#define KEY_DOWN 0x080
+#define KEY_R 0x100
+#define KEY_L 0x200
+extern u16 key_cur, key_prev;
+INLINE void key_poll(void) { key_prev = key_cur; key_cur = (u16)(~REG_KEYINPUT &amp; 0x3FF); }
+INLINE int  key_held(u16 k)     { return (key_cur &amp; k) != 0; }
+INLINE int  key_pressed(u16 k)  { return (key_cur &amp; ~key_prev &amp; k) != 0; }
+INLINE int  key_released(u16 k) { return (~key_cur &amp; key_prev &amp; k) != 0; }
+INLINE int  key_axis_x(void) { return ((key_cur &gt;&gt; 4) &amp; 1) - ((key_cur &gt;&gt; 5) &amp; 1); }
+INLINE int  key_axis_y(void) { return ((key_cur &gt;&gt; 7) &amp; 1) - ((key_cur &gt;&gt; 6) &amp; 1); }
+
+/* ------------------------------------------------------- matematica fixa */
+#define FIX(x)      ((fixed)((x) * 256))
+#define FIX_INT(f)  ((f) &gt;&gt; 8)
+INLINE fixed fix_mul(fixed a, fixed b) { return (a * b) &gt;&gt; 8; }
+extern const s16 gba_sin_lut[256];            /* sin(2*pi*i/256) em 8.8 */
+INLINE fixed fsin(u32 a) { return gba_sin_lut[a &amp; 255]; }   /* a: 0..255 = 0..360 */
+INLINE fixed fcos(u32 a) { return gba_sin_lut[(a + 64) &amp; 255]; }
+u32 rand_u32(void);           /* xorshift32 */
+void rand_seed(u32 s);
+INLINE int rand_range(int lo, int hi) { return lo + (int)((rand_u32() &gt;&gt; 8) % (u32)(hi - lo + 1)); }
+u32 isqrt32(u32 v);
+#define ABS(x) ((x) &lt; 0 ? -(x) : (x))
+#define MIN(a, b) ((a) &lt; (b) ? (a) : (b))
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+#define CLAMP(v, lo, hi) ((v) &lt; (lo) ? (lo) : ((v) &gt; (hi) ? (hi) : (v)))
+
+/* ------------------------------------------------------------- memoria */
+#ifndef GBA_HOST
+void *memcpy(void *d, const void *s, unsigned n);
+void *memset(void *d, int c, unsigned n);
+void *memmove(void *d, const void *s, unsigned n);
+#else
+#include &lt;string.h&gt;
+#endif
+void  cpu_copy32(void *dst, const void *src, u32 words);  /* ldmia/stmia, 8 palavras/iteracao */
+void  cpu_fill32(void *dst, u32 value, u32 words);
+void  dma_copy32(void *dst, const void *src, u32 words);   /* DMA3 (so se for &gt; ~16 palavras) */
+void  dma_fill32(void *dst, u32 value, u32 words);
+void  lz77_decompress(const void *src, void *dst);         /* formato BIOS LZ77 (assets compactados) */
+
+/* ----------------------------------------------------------- draw API */
+/* Modo 3: 240x160, 15 bits, buffer unico (simples).
+ * Modo 4: 240x160, paleta de 256, 2 paginas (gfx_flip) - metade da banda de VRAM. */
+void gfx_init(int mode);                 /* 3 ou 4 */
+void gfx_flip(void);                     /* modo 4: troca de pagina (chame apos vsync) */
+void gfx_clear(u32 color);               /* modo 3: RGB15; modo 4: indice */
+void gfx_pixel(int x, int y, u32 c);
+u32  gfx_get(int x, int y);
+void gfx_hline(int x, int y, int w, u32 c);
+void gfx_vline(int x, int y, int h, u32 c);
+void gfx_line(int x0, int y0, int x1, int y1, u32 c);
+void gfx_rect(int x, int y, int w, int h, u32 c);       /* contorno */
+void gfx_fill(int x, int y, int w, int h, u32 c);       /* preenchido */
+void gfx_circle(int cx, int cy, int r, u32 c);
+void gfx_fill_circle(int cx, int cy, int r, u32 c);
+/* blit: img = u16 (modo 3) ou u8 (modo 4); transp = cor a ignorar, ou -1 para opaco */
+void gfx_blit(const void *img, int x, int y, int w, int h, int transp);
+void gfx_set_palette(int first, const u16 *pal, int count);   /* modo 4 */
+extern u8 *gfx_buf;                       /* pagina de desenho atual */
+
+/* texto: fonte 5x7 embutida em 8x8 (ASCII 32..126) */
+void gfx_text(int x, int y, const char *s, u32 c);
+void gfx_text_bg(int x, int y, const char *s, u32 c, u32 bg);
+void gfx_int(int x, int y, int v, u32 c);
+void gfx_hex(int x, int y, u32 v, int digits, u32 c);
+int  str_len(const char *s);
+char *int_to_str(int v, char *buf);       /* buf &gt;= 12 bytes; devolve inicio */
+
+/* ------------------------------------------------- modo 0 (tiles) + texto */
+void bg_tiles_4bpp(int charblock, const void *tiles, u32 bytes);
+void bg_map(int screenblock, const u16 *map, u32 entries);
+void bg_config(int n, int charblock, int screenblock, int size, int prio);
+void txt_init(int bg, int charblock, int screenblock);  /* carrega fonte como tiles */
+void txt_print(int tx, int ty, const char *s);           /* escreve no mapa (tiles 8x8) */
+void txt_clear(void);
+
+/* ------------------------------------------------------------- sprites */
+#define SPR_8x8   0x0000
+#define SPR_16x16 0x4000
+#define SPR_32x32 0x8000
+#define SPR_64x64 0xC000
+#define SPR_HFLIP 0x1000
+#define SPR_VFLIP 0x2000
+void spr_init(void);                                  /* esconde os 128, ativa OBJ 1D */
+void spr_set(int id, int x, int y, int tile, int pal, u32 size_flags);
+void spr_hide(int id);
+void spr_flush(void);                                 /* copia o shadow-OAM (chame no VBlank) */
+void spr_tiles(int first_tile, const void *data, u32 bytes);
+void spr_palette(const u16 *pal, int count);
+
+/* ----------------------------------------------------------------- som */
+/* Musica: stream compacto gerado do .mid (tools: midi -&gt; .gbm). Toca no ISR de VBlank. */
+void snd_init(void);
+void snd_play(const u8 *song);
+void snd_stop(void);
+void snd_pause(int paused);
+int  snd_playing(void);
+/* Efeitos PCM: 8-bit signed mono, DMA + Timer0, custo de CPU ~0 */
+void snd_pcm_play(const s8 *data, u32 len, u32 hz, int loop);
+void snd_pcm_stop(void);
+/* Efeitos PSG de uma linha: canal 0..3 (pulse1, pulse2, wave, noise) */
+void snd_beep(int ch, int midi_note, int vol, int frames);
+
+#ifdef GBA_HOST
+extern void (*gba_host_vsync_hook)(void);
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#endif
+</code></pre></div>
+<h2>Cuidados importantes</h2>
+<ul><li>Não trate <code>gfx_flip()</code> como operação válida no modo 3; ela é destinada ao modo 4.</li><li>Os índices de paleta do modo 4 não são cores RGB15 diretas.</li><li>Os argumentos de largura, altura, tamanho e ponteiros de assets precisam respeitar o formato esperado pelo modo de vídeo e pela rotina usada.</li><li>As macros de memória e registradores são acesso de baixo nível ao hardware; use apenas quando compreender o mapa de memória do GBA.</li><li><code>EWRAM_BSS</code> está documentado no cabeçalho como seção não zerada; não assuma inicialização automática dos dados.</li></ul>
+</article><footer class="foot">LuaStudio Docs · Referência da versão atual da engine</footer></main><aside class="toc"><b>Nesta página</b><a href="#exemplo">Exemplo rápido</a><a href="#referencia">Referência</a></aside></div>
+<div id="sbox" hidden><div class="sin"><input id="q" placeholder="Buscar funções, classes, propriedades, exemplos…" autocomplete="off"><div id="res"></div></div></div>
+<script src="assets/search-index.js"></script><script src="assets/app.js"></script></body></html>
