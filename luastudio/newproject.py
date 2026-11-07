@@ -203,12 +203,21 @@ class NewProjectScreen(MDScreen):
         self._build_templates()
 
     def _on_name(self, *_a):
-        if self.mode == "normal":
-            name = self.name_in.text
-            self.preview.set_name(name)
-            self.pick_tiles["@initial"].set_name(name)
-        self._refresh_path()
-        self.err_label.text = ""
+        try:
+            if self.mode == "normal":
+                name = self.name_in.text
+                self.preview.set_name(name)
+                self.pick_tiles["@initial"].set_name(name)
+            self._refresh_path()
+            self.err_label.text = ""
+        except Exception as ex:
+            import traceback
+            detail = traceback.format_exc()
+            try:
+                self.app.log("[novo projeto/nome] %s\\n%s" % (ex, detail))
+            except Exception:
+                print(detail)
+            self._error("Erro ao atualizar o nome: %s" % ex)
 
     def _refresh_preview(self):
         name = self.name_in.text
@@ -296,10 +305,6 @@ class NewProjectScreen(MDScreen):
         if luaproject.project_exists(name):
             return self._error("Já existe uma pasta “%s” em Documents. "
                                "Escolha outro nome." % luaproject.folder_name(name))
-        try:
-            perms.request(["storage"])
-        except Exception:
-            pass
         icon = {"glyph": self.icon_state["glyph"], "color": self.icon_state["color"]}
         try:
             proj = luaproject.create_project(name, icon=icon,
@@ -321,10 +326,6 @@ class NewProjectScreen(MDScreen):
         path = os.path.join(gba_root(), folder)
         if os.path.isfile(os.path.join(path, toolchain.CONFIG_NAME)):
             return self._error("Já existe um projeto GBA com esse nome.")
-        try:
-            perms.request(["storage"])
-        except Exception:
-            pass
         try:
             toolchain.create_project(path, self.template)
         except Exception as ex:

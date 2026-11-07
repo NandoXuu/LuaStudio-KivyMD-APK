@@ -1895,6 +1895,14 @@ class LuaStudioApp(MDApp):
                     self.log("[erro no desenho] %s: %s" % (type(ex).__name__, ex))
                     self.log(traceback.format_exc())
 
+    def on_start(self):
+        # Oculta status, bateria, notificações e navegação no editor inteiro.
+        try:
+            Clock.schedule_once(
+                lambda *_a: perms.hide_system_bars(), 0.4)
+        except Exception:
+            perms.hide_system_bars()
+
     def on_resume(self):
         self._devices("resume_devices")
         try:
@@ -1904,8 +1912,8 @@ class LuaStudioApp(MDApp):
             pass
         # o Android limpa o modo imersivo ao voltar do segundo plano:
         # reaplica se tem jogo rodando em tela cheia.
-        if self.playing and self.project and self.project.screen.get("fullscreen", True):
-            perms.hide_system_bars()
+        # O modo imersivo vale para o app inteiro, não apenas para o Play.
+        perms.hide_system_bars()
         return True
 
 
