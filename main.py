@@ -1,64 +1,94 @@
 # -*- coding: utf-8 -*-
-"""Ponto de entrada. No Pydroid 3: abra este arquivo e toque em Play.
-
-IMPORTANTE: nada de pygame aqui. Importar pygame antes do Kivy quebra o
-provider de janela SDL2 no Pydroid 3 ("Application didn't initialize
-properly..."). O audio carrega pygame.mixer sob demanda, depois da janela.
-"""
 import os
 import sys
+import traceback
+from datetime import datetime
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+BASE = os.path.dirname(os.path.abspath(__file__))
 
-# Forca UTF-8 em stdout/stderr (Pydroid/Android as vezes usa outro encoding
-# padrao pro terminal, o que quebrava print() com acentos/emoji/CJK vindos
-# de print()/app.log() do jogo). Falha silenciosamente em Python < 3.7
-# (sem reconfigure) ou em consoles que nao suportam a troca.
-for _stream in (sys.stdout, sys.stderr):
+def get_log_path():
+    # No Android, tenta usar o armazenamento externo privado do aplicativo.
     try:
-        _stream.reconfigure(encoding="utf-8", errors="replace")
+        from jnius import autoclass
+        PythonActivity = autoclass('org.kivy.android.PythonActivity')
+        activity = PythonActivity.mActivity
+        folder = activity.getExternalFilesDir(None)
+        if folder is not None:
+            return os.path.join(
+                str(folder.getAbsolutePath()),
+                "LuaStudio_startup.log"
+            )
     except Exception:
         pass
 
-# Config do Kivy antes de qualquer import do Kivy.
+    return os.path.join(BASE, "LuaStudio_startup.log")
+
+
+LOG = get_log_path()
+
+def log(message):
+    try:
+        with open(LOG, "a", encoding="utf-8") as f:
+            f.write(
+                datetime.now().strftime("[%H:%M:%S] ")
+                + str(message) + "\n"
+            )
+    except Exception:
+        pass
+
+def log_error():
+    log(traceback.format_exc())
+
+log("========== NOVA INICIALIZACAO ==========")
+log("Python: " + sys.version)
+log("Diretorio: " + BASE)
+log("Log: " + LOG)
+
+sys.path.insert(0, BASE)
+
+for stream in (sys.stdout, sys.stderr):
+    try:
+        stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 os.environ.setdefault("KIVY_NO_ARGS", "1")
 os.environ.setdefault("KIVY_NO_CONSOLELOG", "0")
+
+log("Importando configuracao do Kivy...")
+
 try:
     from kivy.config import Config
-    Config.set("kivy", "exit_on_escape", "0")
-    # CORRECAO: "Too much StencilPop (stack underflow)" - bug conhecido do
-    # Kivy no Android quando o multisample (MSAA) da janela conflita com o
-    # stencil buffer usado por ScrollView/clipping em certas GPUs (Adreno/
-    # Mali). Desligar o multisample resolve. Precisa ser setado ANTES da
-    # janela ser criada (por isso fica aqui, antes de qualquer outro import
-    # do Kivy).
-    Config.set("graphics", "multisamples", "0")
-    # Remove providers de input que nao existem no Android (mtdev/hidinput).
-    if Config.has_section("input"):
-        for _key, _val in list(Config.items("input")):
-            if "mtdev" in _val or "hidinput" in _val:
-                Config.remove_option("input", _key)
-except Exception:
-    pass
 
-# Nota: a mensagem "[ERROR] [Input] MTDev is not supported" do log do Kivy e
-# apenas informativa no Android e nao impede o app de rodar.
+    Config.set("kivy", "exit_on_escape", "0")
+    Config.set("graphics", "multisamples", "0")
+
+    if Config.has_section("input"):
+        for key, value in list(Config.items("input")):
+            if "mtdev" in value or "hidinput" in value:
+                Config.remove_option("input", key)
+
+    log("Configuracao Kivy OK")
+
+except Exception:
+    log("ERRO NA CONFIGURACAO DO KIVY")
+    log_error()
 
 if __name__ == "__main__":
     try:
+        log("Importando luastudio.app...")
         from luastudio.app import main
+
+        log("Importacao concluida")
+        log("Iniciando LuaStudio...")
         main()
-    except Exception:
-        # Se ate a IMPORTACAO falhar (ex.: modulo faltando, erro de
-        # sintaxe), garante que o erro apareca em algum lugar visivel,
-        # mesmo que o console do Pydroid nao mostre nada.
-        import traceback
-        tb = traceback.format_exc()
-        print("[LuaStudio] ERRO FATAL AO INICIAR:\n%s" % tb)
-        try:
-            here = os.path.dirname(os.path.abspath(__file__))
-            with open(os.path.join(here, "LuaStudio_erro.txt"), "w", encoding="utf-8") as fh:
-                fh.write(tb)
-        except Exception:
-            pass
+
+        log("LuaStudio retornou de main()")
+
+    except BaseException:
+        log("ERRO FATAL NA INICIALIZACAO")
+        log_error()
         raise
+
+    finally:
+        log("Fim do processo main.py")
