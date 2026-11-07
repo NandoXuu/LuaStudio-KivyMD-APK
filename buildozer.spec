@@ -14,7 +14,7 @@ source.exclude_dirs = tests,__pycache__,.git,bin,.buildozer
 
 version = 7.0
 
-requirements = python3==3.11.9,hostpython3==3.11.9,kivy==2.3.1,kivymd,materialyoucolor,pillow,numpy,plyer,pyjnius,pygame,pygments,fonttools,gtts
+requirements = python3==3.11.9,hostpython3==3.11.9,kivy==2.3.1,kivymd,materialyoucolor==3.0.3,pillow,numpy,plyer,pyjnius,pygame,pygments,fonttools,gtts
 
 orientation = landscape
 
