@@ -20,9 +20,9 @@ orientation = landscape
 
 fullscreen = 0
 
-icon.filename = assets/luastudio_icon.png
+icon.filename = luastudio/icons/splash.png
 
-presplash.filename = assets/luastudio_presplash.png
+presplash.filename = luastudio/icons/splash.png
 
 android.permissions = INTERNET,VIBRATE,CAMERA,RECORD_AUDIO
 
